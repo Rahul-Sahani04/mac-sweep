@@ -7,6 +7,7 @@ from .commands.large import cmd_large
 from .commands.doctor import cmd_doctor
 from .commands.leftovers import cmd_leftovers
 from .commands.restore import cmd_restore
+from .commands.report import cmd_report
 
 
 def normalize_argv(raw_argv: list[str]) -> list[str]:
@@ -75,5 +76,48 @@ def build_parser() -> argparse.ArgumentParser:
     p_restore.add_argument("--overwrite", action="store_true", help="Overwrite destination if it already exists")
     p_restore.add_argument("--json", action="store_true", help="Output machine-readable JSON")
     p_restore.set_defaults(func=cmd_restore)
+
+    # ── report (AI) ──
+    p_report = sub.add_parser("report", help="AI-powered disk analysis via local LLM")
+    p_report.add_argument(
+        "--backend", "-b",
+        choices=["auto", "ollama", "lmstudio"],
+        default="auto",
+        help="Local AI backend to use (default: auto-detect)",
+    )
+    p_report.add_argument(
+        "--model", "-m",
+        default=None,
+        help="Model name to use (default: llama3.2 for Ollama, auto for LM Studio)",
+    )
+    p_report.add_argument(
+        "--mode",
+        choices=["scan", "doctor", "large", "leftovers"],
+        default="scan",
+        help="What to analyse: scan results, system health, large files, or orphaned apps (default: scan)",
+    )
+    p_report.add_argument(
+        "--min-mb",
+        type=int,
+        default=200,
+        help="For --mode large: minimum file size in MB (default: 200)",
+    )
+    p_report.add_argument(
+        "--save",
+        action="store_true",
+        help="Save the report as a Markdown file in your home directory",
+    )
+    p_report.add_argument(
+        "--stdin",
+        action="store_true",
+        help="Read scan JSON from stdin instead of running a fresh scan (pipe from mac-sweep scan --json)",
+    )
+    p_report.add_argument(
+        "--category", "-c",
+        nargs="+",
+        choices=list(CATEGORY_COLORS.keys()),
+        help="Filter scan categories passed to the AI (only used when --mode scan)",
+    )
+    p_report.set_defaults(func=cmd_report)
 
     return parser

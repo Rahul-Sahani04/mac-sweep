@@ -18,6 +18,12 @@ try:
     HAS_RICH = True
 except ImportError:
     HAS_RICH = False
+    Table = None
+    Panel = None
+    box = None
+    Text = None
+    Align = None
+    Confirm = None
 
 console = Console() if HAS_RICH else None
 
