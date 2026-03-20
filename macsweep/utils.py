@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 from datetime import datetime
 
-from mac_sweep_config import CATEGORY_SAFE_EXPLANATIONS
+from .config import CATEGORY_SAFE_EXPLANATIONS
 
 try:
     from rich.console import Console

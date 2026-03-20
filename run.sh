@@ -12,4 +12,4 @@ if [ ! -x "$PYTHON_BIN" ]; then
     exit 1
 fi
 
-exec "$PYTHON_BIN" "$SCRIPT_DIR/mac_sweep.py" "$@"
+exec "$PYTHON_BIN" -m macsweep "$@"

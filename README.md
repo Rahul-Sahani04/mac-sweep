@@ -147,9 +147,18 @@ Project files added for reproducible setup:
 
 Code layout (modularized):
 
-- `mac_sweep.py` — command implementations and CLI entrypoint
-- `mac_sweep_config.py` — scan targets, category config, risk config
-- `mac_sweep_utils.py` — shared helpers (size, filtering, deletion, JSON, rich rendering)
+- `mac_sweep.py` — compatibility entrypoint
+- `macsweep/` — Python package root
+- `macsweep/__main__.py` — package entrypoint (`python -m macsweep`)
+- `macsweep/cli.py` — argument parsing and command routing
+- `macsweep/config.py` — scan targets, category config, risk config
+- `macsweep/utils.py` — shared helpers (size, filtering, deletion, JSON, rich rendering)
+- `macsweep/commands/scan.py` — scan command
+- `macsweep/commands/clean.py` — clean command
+- `macsweep/commands/large.py` — large-files command
+- `macsweep/commands/doctor.py` — doctor command
+- `macsweep/commands/leftovers.py` — leftovers command
+- `macsweep/commands/restore.py` — restore command
 
 ---
 

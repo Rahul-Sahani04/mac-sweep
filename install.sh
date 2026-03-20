@@ -29,12 +29,16 @@ else
     "$VENV_DIR/bin/python" -m pip install --quiet rich
 fi
 
-# Copy script and make executable
-cp "$SCRIPT_DIR/mac_sweep.py" "$INSTALL_DIR/$TOOL_NAME"
+# Install launcher script
+cat > "$INSTALL_DIR/$TOOL_NAME" <<EOF
+#!/usr/bin/env bash
+set -euo pipefail
+SCRIPT_DIR="$SCRIPT_DIR"
+PYTHON_BIN="\$SCRIPT_DIR/.venv/bin/python"
+export PYTHONPATH="\$SCRIPT_DIR\${PYTHONPATH:+:\$PYTHONPATH}"
+exec "\$PYTHON_BIN" -m macsweep "\$@"
+EOF
 chmod +x "$INSTALL_DIR/$TOOL_NAME"
-
-# Fix shebang to use virtualenv python
-sed -i '' "1s|.*|#!$VENV_DIR/bin/python|" "$INSTALL_DIR/$TOOL_NAME"
 
 echo "  ✓  Installed to $INSTALL_DIR/$TOOL_NAME"
 echo "  ✓  Virtualenv ready at $VENV_DIR"
